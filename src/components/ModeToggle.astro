@@ -1,0 +1,54 @@
+---
+// src/components/ModeToggle.astro
+---
+
+<button
+  id="mode-toggle"
+  class="relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-sm cursor-pointer border-zinc-700 bg-zinc-900 text-cyan-400 hover:border-cyan-400"
+>
+  <span id="toggle-indicator" class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+  <span id="toggle-label">Mode: Professional ⚙️</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('mode-toggle');
+  const toggleLabel = document.getElementById('toggle-label');
+  const toggleIndicator = document.getElementById('toggle-indicator');
+  
+  let currentMode = localStorage.getItem('portfolio-mode') || 'professional';
+
+  function applyMode(mode: string) {
+    const root = document.documentElement;
+    const heroBg = document.getElementById('hero-bg-creative');
+    const proProjects = document.querySelectorAll('.project-pro');
+    const creativeProjects = document.querySelectorAll('.project-creative');
+
+    if (mode === 'creative') {
+        root.classList.add('creative-mode');
+        if (toggleLabel) toggleLabel.textContent = 'Mode: Creative ☀️';
+        if (toggleIndicator) toggleIndicator.className = 'w-2 h-2 rounded-full bg-amber-300 animate-pulse';
+        if (toggleBtn) toggleBtn.className = 'relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-md cursor-pointer border-amber-300 bg-amber-100 text-stone-900 font-bold hover:bg-white';
+
+        if (heroBg) heroBg.classList.remove('opacity-0');
+        proProjects.forEach(el => el.classList.add('hidden'));
+        creativeProjects.forEach(el => el.classList.remove('hidden'));
+    } else {
+      root.classList.remove('creative-mode');
+      if (toggleLabel) toggleLabel.textContent = 'Mode: Professional ⚙️';
+      if (toggleIndicator) toggleIndicator.className = 'w-2 h-2 rounded-full bg-cyan-400 animate-pulse';
+      if (toggleBtn) toggleBtn.className = 'relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-sm cursor-pointer border-zinc-700 bg-zinc-900 text-cyan-400 hover:border-cyan-400';
+
+      if (heroBg) heroBg.classList.add('opacity-0');
+      proProjects.forEach(el => el.classList.remove('hidden'));
+      creativeProjects.forEach(el => el.classList.add('hidden'));
+    }
+    localStorage.setItem('portfolio-mode', mode);
+  }
+
+  applyMode(currentMode);
+
+  toggleBtn?.addEventListener('click', () => {
+    currentMode = currentMode === 'professional' ? 'creative' : 'professional';
+    applyMode(currentMode);
+  });
+</script>

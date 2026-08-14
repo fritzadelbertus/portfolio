@@ -1,0 +1,124 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+@import "projects.css";
+
+/* Default Professional Mode Resets */
+body {
+  @apply bg-zinc-950 text-zinc-100 font-sans antialiased transition-colors duration-500;
+}
+
+/* ==========================================================================
+   Creative Mode Overrides (Full Juicy Orange Canvas & Sunny Vibes)
+   ========================================================================== */
+
+/* 1. Page Background & Main Text Contrast */
+html.creative-mode body {
+  @apply !bg-amber-50/80 !text-stone-900;
+}
+
+/* 2. Header Bar (Translucent Warm Sunset Glass) */
+html.creative-mode header {
+  @apply !bg-amber-50/90 !border-orange-200/80;
+}
+
+/* Header Text & Logo */
+html.creative-mode header a,
+html.creative-mode header nav a {
+  @apply !text-stone-950 hover:!text-amber-200;
+}
+
+/* 3. Typography Overrides (EXCLUDING the Hero Section) */
+html.creative-mode :not(#hero) > h1,
+html.creative-mode :not(#hero) > h2,
+html.creative-mode :not(#hero) > h3,
+html.creative-mode section:not(#hero) h1,
+html.creative-mode section:not(#hero) h2,
+html.creative-mode section:not(#hero) h3 {
+  @apply !text-stone-950;
+}
+
+html.creative-mode section:not(#hero) p {
+  @apply !text-stone-900/90 font-medium;
+}
+
+/* 4. Convert Cyan Accent Classes into Golden Warmth (Outside of Hero) */
+html.creative-mode section:not(#hero) .text-cyan-400,
+html.creative-mode section:not(#hero) .text-cyan-300 {
+  @apply !text-orange-600;
+}
+
+html.creative-mode .bg-cyan-950 {
+  @apply !bg-orange-100;
+}
+
+html.creative-mode .border-cyan-800,
+html.creative-mode .border-cyan-500\/30 {
+  @apply !border-orange-300;
+}
+
+/* 5. HERO EXCEPTION: Preserve White/Light Text & Cyan Accents inside Hero */
+html.creative-mode #hero h1,
+html.creative-mode #hero h2,
+html.creative-mode #hero h3 {
+  @apply !text-white;
+}
+
+html.creative-mode #hero p, {
+  @apply !text-zinc-100;
+}
+
+html.creative-mode #hero .text-cyan-400 {
+  @apply !text-amber-300 font-bold; /* Keeps electric cyan or warm highlight crisp over the dark overlay */
+}
+
+/* 6. Project Cards (Bright Sunlit White Surfaces) */
+html.creative-mode article,
+html.creative-mode .project-card {
+  @apply !bg-white/80 !border-orange-200/90 shadow-sm hover:!border-orange-400 hover:!bg-white;
+}
+
+html.creative-mode .border-zinc-800,
+html.creative-mode .border-zinc-800\/80 {
+  @apply !border-orange-200;
+}
+html.creative-mode .group:hover .group-hover\:text-cyan-400 {
+  @apply !text-orange-500; /* or !text-amber-950 / !text-orange-600 depending on contrast */
+}
+
+/* 7. Tag Badges inside Cards */
+html.creative-mode .bg-zinc-800\/40,
+html.creative-mode .bg-zinc-800\/50 {
+  @apply !bg-orange-100/60 !text-orange-900 !border-orange-200;
+}
+
+/* 8. Metric Callout Box */
+html.creative-mode .bg-zinc-950\/90 {
+  @apply !bg-orange-50/90 !border-orange-200 !text-orange-800;
+}
+
+html.creative-mode .bg-cyan-400 {
+  @apply !bg-orange-500;
+}
+
+/* Hide the resume button in Creative Mode */
+html.creative-mode .hero-action-btn .hover\:bg-cyan-400:hover {
+  @apply !bg-orange-500;
+}
+
+html.creative-mode .hero-action-btn .hero-btn:hover {
+  @apply !text-orange-500;
+}
+
+html.creative-mode .hero-action-btn .hero-btn {
+    @apply !text-zinc-100;
+}
+
+html.creative-mode #hero-subtitle-pro {
+  @apply !hidden;
+}
+
+html.creative-mode #hero-subtitle-creative {
+  @apply !block;
+}
+
+/* src/styles/global.css */

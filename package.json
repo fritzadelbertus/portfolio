@@ -12,6 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.0.8"
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^6.0.8",
+    "katex": "^0.18.4",
+    "lucide-react": "^1.31.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "tailwindcss": "^4.3.3"
   }
 }

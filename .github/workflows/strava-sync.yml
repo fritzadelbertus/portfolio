@@ -1,0 +1,68 @@
+name: Sync Strava Activities
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs every day at 00:00 UTC
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch Strava Data
+        env:
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+        run: |
+          node -e '
+          const fs = require("fs");
+          async function sync() {
+            // 1. Get Access Token
+            const tokenRes = await fetch("https://www.strava.com/oauth/token", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                client_id: process.env.STRAVA_CLIENT_ID,
+                client_secret: process.env.STRAVA_CLIENT_SECRET,
+                refresh_token: process.env.STRAVA_REFRESH_TOKEN,
+                grant_type: "refresh_token"
+              })
+            });
+            const tokenData = await tokenRes.json();
+            const accessToken = tokenData.access_token;
+
+            // 2. Fetch Activities (Run type only)
+            const actRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=200", {
+              headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            const activities = await actRes.json();
+
+            const runs = activities
+              .filter(a => a.type === "Run")
+              .map(a => ({
+                date: a.start_date_local.split("T")[0],
+                distanceKm: Number((a.distance / 1000).toFixed(2))
+              }));
+
+            fs.writeFileSync("./src/data/strava-activities.json", JSON.stringify(runs, null, 2));
+            console.log(`Synced ${runs.length} runs successfully!`);
+          }
+          sync();
+          '
+
+      - name: Commit and Push Updated Data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/strava-activities.json
+          git commit -m "update: sync strava running activities" || exit 0
+          git push

@@ -1,0 +1,209 @@
+
+/* Custom styling for Markdown tables inside project detail pages */
+.prose table {
+  @apply w-full border-collapse rounded-xl overflow-hidden border border-zinc-800 my-6;
+}
+
+.prose thead {
+  @apply bg-zinc-900/90 border-b border-zinc-800;
+}
+
+.prose th {
+  @apply py-3 px-4 font-mono text-xs uppercase tracking-wider text-zinc-300 border-none;
+}
+
+.prose td {
+  @apply py-3 px-4 text-sm text-zinc-300 border-b border-zinc-800/60;
+}
+
+.prose tr:hover {
+  @apply bg-zinc-900/50 transition-colors;
+}
+
+/* Creative Mode table overrides */
+html.creative-mode .prose table {
+  @apply !border-orange-300;
+}
+
+html.creative-mode .prose thead {
+  @apply !bg-orange-100/80 !border-orange-300;
+}
+
+html.creative-mode .prose th {
+  @apply !text-stone-900;
+}
+
+html.creative-mode .prose td {
+  @apply !text-stone-800 !border-orange-200;
+}
+
+/* ==========================================================================
+   Vibrant Table Styling for Markdown (.md) Pages
+   ========================================================================== */
+
+/* Outer Table Shell & Borders */
+.prose table {
+  @apply w-full border-collapse rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/60 shadow-xl my-6;
+}
+
+/* Gradient Header Row */
+.prose thead {
+  @apply bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 border-b border-zinc-700;
+}
+
+.prose th {
+  @apply py-3.5 px-5 font-mono text-xs uppercase tracking-wider text-cyan-400 border-none;
+}
+
+/* Alternating Colored Rows (Zebra Striping) */
+.prose tbody tr:nth-child(even) {
+  @apply bg-zinc-900/30;
+}
+
+.prose tbody tr:nth-child(odd) {
+  @apply bg-zinc-950/60;
+}
+
+/* Row Hover State */
+.prose tbody tr:hover {
+  @apply bg-cyan-950/30 transition-colors;
+}
+
+.prose td {
+  @apply py-3.5 px-5 text-sm text-zinc-200 border-b border-zinc-800/60;
+}
+
+/* Format Strong Values (Bold numbers inside tables) */
+.prose td strong {
+  @apply font-mono text-emerald-400 font-bold;
+}
+
+/* ==========================================================================
+   Creative Mode Overrides (Juicy Orange & Warm Amber Palette)
+   ========================================================================== */
+
+html.creative-mode .prose table {
+  @apply !border-orange-300 !bg-white/90 shadow-orange-950/10;
+}
+
+html.creative-mode .prose thead {
+  @apply !bg-gradient-to-r !from-orange-500 !via-amber-500 !to-orange-500 !border-orange-400;
+}
+
+html.creative-mode .prose th {
+  @apply !text-stone-950 font-bold;
+}
+
+html.creative-mode .prose tbody tr:nth-child(even) {
+  @apply !bg-orange-50/60;
+}
+
+html.creative-mode .prose tbody tr:nth-child(odd) {
+  @apply !bg-amber-50/40;
+}
+
+html.creative-mode .prose tbody tr:hover {
+  @apply !bg-orange-100/90;
+}
+
+html.creative-mode .prose td {
+  @apply !text-stone-900 !border-orange-200;
+}
+
+html.creative-mode .prose td strong {
+  @apply !text-orange-700 font-extrabold;
+}
+
+/* src/styles/global.css */
+
+/* ==========================================================================
+   Markdown Typography & Heading Enhancements
+   ========================================================================== */
+
+/* Make all h2 headings in Markdown pop */
+.prose h2 {
+  @apply text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-100 
+         mt-10 mb-4 pb-2 border-b border-zinc-800/80 
+         flex items-center gap-2;
+}
+
+/* Add a subtle cyan accent indicator before every h2 in Professional Mode */
+.prose h2::before {
+  content: "::";
+  @apply font-mono text-cyan-400 text-lg md:text-xl font-bold;
+}
+
+/* Style h3 subheadings for secondary hierarchy */
+.prose h3 {
+  @apply text-xl font-bold text-zinc-200 mt-6 mb-3;
+}
+
+/* ==========================================================================
+   Creative Mode Heading Overrides
+   ========================================================================== */
+
+html.creative-mode .prose h2 {
+  @apply !text-stone-950 !border-orange-300;
+}
+
+html.creative-mode .prose h2::before {
+  @apply !text-orange-600;
+}
+
+html.creative-mode .prose h3 {
+  @apply !text-stone-900;
+}
+
+/* src/styles/global.css */
+
+/* ==========================================================================
+   Unordered (ul) and Ordered (ol) List Styles for Markdown Content
+   ========================================================================== */
+
+/* Unordered Lists (Bullet Points) */
+.prose ul {
+  @apply list-disc list-outside ml-6 space-y-2 my-4 text-zinc-300;
+}
+
+/* Ordered Lists (Numbered Points) */
+.prose ol {
+  @apply list-decimal list-outside ml-6 space-y-2 my-4 text-zinc-300;
+}
+
+/* Individual List Items */
+.prose li {
+  @apply leading-relaxed pl-1;
+}
+
+/* Style strong/bold text inside list items */
+.prose li strong {
+  @apply font-semibold text-zinc-100;
+}
+
+/* Custom Bullet Symbol Color (Cyan Accent in Professional Mode) */
+.prose ul li::marker {
+  @apply text-cyan-400 font-bold;
+}
+
+/* Custom Number Color in Professional Mode */
+.prose ol li::marker {
+  @apply text-cyan-400 font-mono font-semibold;
+}
+
+/* ==========================================================================
+   Creative Mode Overrides (Juicy Orange & Warm Accent Bullets)
+   ========================================================================== */
+
+html.creative-mode .prose ul,
+html.creative-mode .prose ol {
+  @apply !text-stone-800;
+}
+
+html.creative-mode .prose li strong {
+  @apply !text-stone-950;
+}
+
+html.creative-mode .prose ul li::marker,
+html.creative-mode .prose ol li::marker {
+  @apply !text-orange-600;
+}
