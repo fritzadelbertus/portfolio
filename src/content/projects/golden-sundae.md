@@ -78,7 +78,7 @@ Full Report
 
 Charts
 
-![Backtest Equity Curve](../../../assets/images/golden_sundae_charts.webp)
+![Backtest Charts](../../../public/images/golden_sundae_charts.webp)
 
 
 ## Verification Artifacts
