@@ -5,6 +5,7 @@ category: "Quant"
 tags: ["MQL5", "MetaTrader 5", "Algorithmic Trading", "State Machines", "ATR Volatility"]
 metrics: "2.08 Profit Factor | Max Drawdown < $1,000 USD"
 demoUrl: "https://social.tp-redirect.com/s/6loYzn7R"
+demoLabel: "View Live Bot"
 featured: true
 ---
 

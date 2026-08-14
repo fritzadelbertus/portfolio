@@ -1,42 +1,4 @@
 
-/* Custom styling for Markdown tables inside project detail pages */
-.prose table {
-  @apply w-full border-collapse rounded-xl overflow-hidden border border-zinc-800 my-6;
-}
-
-.prose thead {
-  @apply bg-zinc-900/90 border-b border-zinc-800;
-}
-
-.prose th {
-  @apply py-3 px-4 font-mono text-xs uppercase tracking-wider text-zinc-300 border-none;
-}
-
-.prose td {
-  @apply py-3 px-4 text-sm text-zinc-300 border-b border-zinc-800/60;
-}
-
-.prose tr:hover {
-  @apply bg-zinc-900/50 transition-colors;
-}
-
-/* Creative Mode table overrides */
-html.creative-mode .prose table {
-  @apply !border-orange-300;
-}
-
-html.creative-mode .prose thead {
-  @apply !bg-orange-100/80 !border-orange-300;
-}
-
-html.creative-mode .prose th {
-  @apply !text-stone-900;
-}
-
-html.creative-mode .prose td {
-  @apply !text-stone-800 !border-orange-200;
-}
-
 /* ==========================================================================
    Vibrant Table Styling for Markdown (.md) Pages
    ========================================================================== */
@@ -114,8 +76,6 @@ html.creative-mode .prose td strong {
   @apply !text-orange-700 font-extrabold;
 }
 
-/* src/styles/global.css */
-
 /* ==========================================================================
    Markdown Typography & Heading Enhancements
    ========================================================================== */
@@ -153,8 +113,6 @@ html.creative-mode .prose h2::before {
 html.creative-mode .prose h3 {
   @apply !text-stone-900;
 }
-
-/* src/styles/global.css */
 
 /* ==========================================================================
    Unordered (ul) and Ordered (ol) List Styles for Markdown Content
@@ -206,4 +164,79 @@ html.creative-mode .prose li strong {
 html.creative-mode .prose ul li::marker,
 html.creative-mode .prose ol li::marker {
   @apply !text-orange-600;
+}
+
+/* ==========================================================================
+   Strava Dashboard Creative Mode Overrides
+   ========================================================================== */
+
+/* 1. Main Dashboard Card Container */
+html.creative-mode .strava-dashboard-container {
+  @apply !bg-white/80 !border-orange-200/90 shadow-lg shadow-orange-950/5;
+}
+
+/* 2. Key Stat Sub-Cards */
+html.creative-mode .strava-stat-card {
+  @apply !bg-orange-50/80 !border-orange-200/80;
+}
+
+html.creative-mode .strava-stat-card span:first-child {
+  @apply !text-stone-600; /* Card Label */
+}
+
+html.creative-mode .strava-stat-card span:last-child {
+  @apply !text-stone-900; /* Card Value */
+}
+
+/* 3. Progress Bar Track & Fill */
+html.creative-mode .strava-progress-track {
+  @apply !bg-orange-100 !border-orange-200;
+}
+
+html.creative-mode .strava-progress-fill {
+  @apply !from-amber-500 !to-orange-500;
+}
+
+/* 4. Heatmap Tile Overrides for Empty/Zero Days */
+html.creative-mode .strava-heatmap-empty {
+  @apply !bg-orange-100/60 !border-orange-200/60;
+}
+
+/* 5. Headers & Labels */
+html.creative-mode .strava-dashboard-container h3,
+html.creative-mode .strava-dashboard-container h4 {
+  @apply !text-stone-950 font-bold;
+}
+
+html.creative-mode .strava-dashboard-container .text-zinc-400,
+html.creative-mode .strava-dashboard-container .text-zinc-500 {
+  @apply !text-stone-700;
+}
+
+/* ==========================================================================
+   Milestone Cards Creative Mode Overrides
+   ========================================================================== */
+
+html.creative-mode .strava-milestone-card {
+  @apply !bg-white/90 !border-orange-200/90 shadow-sm;
+}
+
+html.creative-mode .strava-milestone-card span {
+  @apply !text-stone-900;
+}
+
+html.creative-mode .strava-milestone-card .text-zinc-500 {
+  @apply !text-stone-600;
+}
+
+html.creative-mode .strava-milestone-card .text-emerald-400 {
+  @apply !text-emerald-700 font-extrabold;
+}
+
+/* ==========================================================================
+   Project Detail Live Demo Button (Creative Mode Warm Orange)
+   ========================================================================== */
+
+html.creative-mode .project-demo-btn {
+  @apply !bg-orange-500 hover:!bg-orange-600 !text-white shadow-orange-950/20;
 }

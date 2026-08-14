@@ -63,7 +63,7 @@ html.creative-mode #hero h3 {
   @apply !text-white;
 }
 
-html.creative-mode #hero p, {
+html.creative-mode #hero p {
   @apply !text-zinc-100;
 }
 

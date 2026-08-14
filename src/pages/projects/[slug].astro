@@ -16,7 +16,7 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 ---
 
-<Layout title={`${project.data.title} | Portfolio`}>
+<Layout title={`${project.data.title} | Portfolio`} category={project.data.category}>
   <article class="max-w-4xl mx-auto px-6 py-12">
     
     <header class="space-y-4 border-b border-zinc-800 pb-8 mb-8">
@@ -24,18 +24,44 @@ const { Content } = await render(project);
         {project.data.title}
       </h1>
 
-      {project.id === 'around-the-globe' && <StravaDashboard />}
-      
       <div class="flex flex-wrap items-center gap-4 pt-4">
-        
+        {project.data.strava && (
+          <a
+            href={project.data.strava}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-[#FC4C02] hover:bg-[#e04300] text-white text-xs font-mono font-bold rounded-lg transition-colors shadow-md shadow-orange-950/20"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7.92 15.772h4.172" />
+            </svg>
+            <span>Strava Profile</span>
+          </a>
+        )}
+
+        {project.data.instagram && (
+          <a
+            href={project.data.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white text-xs font-mono font-bold rounded-lg transition-opacity shadow-md shadow-pink-950/20"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6 2.797-6 6.203s2.597 6.203 6 6.203 6-2.797 6-6.203-2.597-6.203-6-6.203zm0 10.211c-2.212 0-4-1.788-4-4s1.788-4 4-4 4 1.788 4 4-1.788 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+            <span>Instagram</span>
+          </a>
+        )}
+
         {project.data.demoUrl && (
           <a
             href={project.data.demoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500 text-zinc-950 font-semibold rounded-lg hover:bg-cyan-400 transition-colors shadow-md shadow-cyan-950/20"
+            class="project-demo-btn inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500 text-zinc-950 font-semibold rounded-lg hover:bg-cyan-400 transition-colors shadow-md shadow-cyan-950/20"
           >
-            <span>View Live Bot</span>
+            <span>{project.data.demoLabel ?? 'View Live Project'}</span>
+            
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
             </svg>
@@ -57,6 +83,7 @@ const { Content } = await render(project);
         )}
 
       </div>
+      {project.id === 'around-the-globe' && <StravaDashboard />}
     </header>
 
     <div class="prose prose-invert max-w-none">

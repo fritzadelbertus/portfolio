@@ -50,5 +50,7 @@
   toggleBtn?.addEventListener('click', () => {
     currentMode = currentMode === 'professional' ? 'creative' : 'professional';
     applyMode(currentMode);
+    
+    localStorage.setItem('theme-mode', currentMode);
   });
 </script>

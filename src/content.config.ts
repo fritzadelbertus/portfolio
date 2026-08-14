@@ -12,7 +12,10 @@ const projects = defineCollection({
     tags: z.array(z.string()),
     metrics: z.string().optional(), // For quantitative results (e.g., "2.08 Profit Factor")
     github: z.string().url().optional(),
+    strava: z.string().url().optional(),    
+    instagram: z.string().url().optional(),
     demoUrl: z.string().url().optional(),
+    demoLabel: z.string().optional(),
     featured: z.boolean().default(true),
   }),
 });

@@ -3,88 +3,103 @@
 import stravaData from '../data/strava-activities.json';
 
 interface Activity {
-  date: string; // YYYY-MM-DD
+  date: string;
   distanceKm: number;
+  type?: string;
 }
 
-const TOTAL_GOAL_KM = 40075;
-
-// Compute metrics
+const TOTAL_GOAL_KM = 40075; // Earth Circumference Goal
 const activities: Activity[] = stravaData || [];
-const totalDistanceKm = activities.reduce((sum, act) => sum + act.distanceKm, 0);
-const progressPercentage = ((totalDistanceKm / TOTAL_GOAL_KM) * 100).toFixed(2);
-const totalRuns = activities.length;
 
-// Generate last 365 days for the GitHub-like heat map grid
+// Calculate overall metrics
+const totalDistanceKm = activities.reduce((sum, act) => sum + act.distanceKm, 0);
+const progressPercentage = Math.min((totalDistanceKm / TOTAL_GOAL_KM) * 100, 100).toFixed(2);
+
+const totalRuns = activities.filter(a => a.type === 'Run' || a.type === 'VirtualRun').length;
+const totalWalks = activities.filter(a => a.type === 'Walk').length;
+
+// Generate 365 days for the heatmap grid
 const today = new Date();
 const pastYearDays = Array.from({ length: 365 }).map((_, i) => {
   const d = new Date();
   d.setDate(today.getDate() - (364 - i));
   const dateStr = d.toISOString().split('T')[0];
-  const matchedRun = activities.find(a => a.date === dateStr);
+  const matchedAct = activities.find(a => a.date === dateStr);
   return {
     date: dateStr,
-    distanceKm: matchedRun ? matchedRun.distanceKm : 0,
+    distanceKm: matchedAct ? matchedAct.distanceKm : 0,
   };
 });
 
-// Color density function (GitHub-style intensity levels)
 function getHeatmapColor(km: number) {
-  if (km === 0) return 'bg-zinc-800/50 border-zinc-700/30';
+  if (km === 0) return 'strava-heatmap-empty bg-zinc-800/50 border-zinc-700/30';
   if (km < 5) return 'bg-orange-950 border-orange-800 text-orange-400';
   if (km < 10) return 'bg-orange-700 border-orange-600 text-white';
   if (km < 21.1) return 'bg-orange-500 border-orange-400 text-white font-bold';
-  return 'bg-amber-400 border-amber-300 text-zinc-950 font-extrabold'; // Half marathon or more
+  return 'bg-amber-400 border-amber-300 text-zinc-950 font-extrabold';
 }
+
+// Milestone Definition List
+const milestones = [
+  { name: 'Jakarta – Bali', targetKm: 1000, icon: '🏝️' },
+  { name: 'Washington – Florida', targetKm: 4500, icon: '🇺🇸' },
+  { name: 'Circumference of Moon', targetKm: 10917, icon: '🌙' },
+  { name: 'Circumference of Mercury', targetKm: 15329, icon: '⚪' },
+  { name: 'Circumference of Mars', targetKm: 21344, icon: '🔴' },
+  { name: 'Circumference of Venus', targetKm: 38025, icon: '🌕' },
+];
 ---
 
-<div class="space-y-8 my-8 p-6 bg-zinc-900/60 border border-zinc-800 rounded-2xl shadow-xl">
+<div class="strava-dashboard-container space-y-8 my-8 p-6 bg-zinc-900/60 border border-zinc-800 rounded-2xl shadow-xl transition-colors duration-500 font-sans">
   
   <div class="space-y-3">
     <div class="flex justify-between items-end">
       <div>
-        <span class="font-mono text-xs uppercase tracking-wider text-orange-400 block mb-1">Global Target</span>
-        <h3 class="text-2xl font-bold font-mono text-zinc-100">
-          {totalDistanceKm.toFixed(1)} <span class="text-sm font-normal text-zinc-400">/ {TOTAL_GOAL_KM.toLocaleString()} km</span>
+        <span class="font-mono text-xs uppercase tracking-wider text-orange-500 font-semibold block mb-1">
+          Global Orbit Target (Earth)
+        </span>
+        <h3 class="text-2xl md:text-3xl font-bold font-mono text-zinc-100">
+          {totalDistanceKm.toFixed(1)} <span class="text-sm font-normal text-zinc-400">/ {TOTAL_GOAL_KM.toString()} km</span>
         </h3>
       </div>
       <div class="text-right">
-        <span class="text-xs font-mono text-zinc-400">Circumference Covered</span>
-        <div class="text-xl font-mono font-bold text-orange-400">{progressPercentage}%</div>
+        <span class="text-xs font-mono text-zinc-400 block">Globe Coverage</span>
+        <div class="text-xl font-mono font-bold text-orange-500">{progressPercentage}%</div>
       </div>
     </div>
 
-    <div class="w-full h-3 bg-zinc-950 rounded-full overflow-hidden border border-zinc-800">
+    <div class="strava-progress-track w-full h-3.5 bg-zinc-950 rounded-full overflow-hidden border border-zinc-800">
       <div 
-        class="h-full bg-gradient-to-r from-orange-600 to-amber-400 rounded-full transition-all duration-1000"
+        class="strava-progress-fill h-full bg-gradient-to-r from-orange-600 via-amber-500 to-amber-300 rounded-full transition-all duration-1000 shadow-md shadow-orange-500/20"
         style={`width: ${Math.max(Number(progressPercentage), 1)}%`}
       ></div>
     </div>
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-3 gap-4 font-mono text-xs">
-    <div class="p-3 bg-zinc-950/80 rounded-lg border border-zinc-800">
-      <span class="text-zinc-500 block">Total Running Sessions</span>
-      <span class="text-lg font-bold text-zinc-100">{totalRuns} Runs</span>
+    <div class="strava-stat-card p-3.5 bg-zinc-950/80 rounded-xl border border-zinc-800">
+      <span class="text-zinc-400 block mb-1">Total Activities</span>
+      <span class="text-lg font-bold text-orange-500">{totalRuns} Runs | {totalWalks} Walks</span>
     </div>
-    <div class="p-3 bg-zinc-950/80 rounded-lg border border-zinc-800">
-      <span class="text-zinc-500 block">Remaining Distance</span>
-      <span class="text-lg font-bold text-zinc-100">{(TOTAL_GOAL_KM - totalDistanceKm).toFixed(0)} km</span>
+    <div class="strava-stat-card p-3.5 bg-zinc-950/80 rounded-lg border border-zinc-800">
+      <span class="text-zinc-400 block mb-1">Distance Left</span>
+      <span class="text-lg font-bold text-zinc-100">{Math.max(TOTAL_GOAL_KM - totalDistanceKm, 0).toFixed(0)} km</span>
     </div>
-    <div class="p-3 bg-zinc-950/80 rounded-lg border border-zinc-800 col-span-2 md:col-span-1">
-      <span class="text-zinc-500 block">Furthest Single Run</span>
-      <span class="text-lg font-bold text-orange-400">21.1 km (Half Marathon)</span>
+
+    <div class="strava-stat-card p-3.5 bg-zinc-950/80 rounded-lg border border-zinc-800">
+      <span class="text-zinc-400 block mb-1">Furthest Run</span>
+      <span class="text-lg font-bold text-cyan-400">21.46 km</span>
     </div>
   </div>
 
-  <div>
-    <div class="flex justify-between items-center mb-3">
-      <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400">
+  <div class="space-y-3 pt-2 border-t border-zinc-800/80">
+    <div class="flex justify-between items-center">
+      <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 font-semibold">
         365-Day Activity Heatmap
       </h4>
       <div class="flex items-center gap-1.5 font-mono text-[10px] text-zinc-500">
         <span>Less</span>
-        <span class="w-2.5 h-2.5 rounded-sm bg-zinc-800/80 border border-zinc-700/50"></span>
+        <span class="strava-heatmap-empty w-2.5 h-2.5 rounded-sm bg-zinc-800/80 border border-zinc-700/50"></span>
         <span class="w-2.5 h-2.5 rounded-sm bg-orange-950 border border-orange-800"></span>
         <span class="w-2.5 h-2.5 rounded-sm bg-orange-700 border border-orange-600"></span>
         <span class="w-2.5 h-2.5 rounded-sm bg-orange-500 border border-orange-400"></span>
@@ -97,11 +112,60 @@ function getHeatmapColor(km: number) {
       <div class="grid grid-rows-7 grid-flow-col gap-1.5 w-max">
         {pastYearDays.map((day) => (
           <div 
-            title={`${day.date}: ${day.distanceKm > 0 ? `${day.distanceKm.toFixed(2)} km` : 'No run'}`}
+            title={`${day.date}: ${day.distanceKm > 0 ? `${day.distanceKm.toFixed(2)} km` : 'No activity'}`}
             class={`w-3.5 h-3.5 rounded-sm border transition-transform hover:scale-125 cursor-pointer ${getHeatmapColor(day.distanceKm)}`}
           ></div>
         ))}
       </div>
+    </div>
+  </div>
+
+  <div class="space-y-4 pt-4 border-t border-zinc-800/80">
+    <h4 class="font-mono text-xs uppercase tracking-wider text-zinc-400 font-semibold flex items-center gap-2">
+      <span>🚩 Journey Milestones & Planetary Checkpoints</span>
+    </h4>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+      {milestones.map((m) => {
+        const isUnlocked = totalDistanceKm >= m.targetKm;
+        const mProgress = Math.min((totalDistanceKm / m.targetKm) * 100, 100).toFixed(1);
+
+        return (
+          <div class={`strava-milestone-card p-3.5 rounded-xl border transition-all ${
+            isUnlocked 
+              ? 'bg-orange-950/20 border-orange-600/40' 
+              : 'bg-zinc-950/60 border-zinc-800/80'
+          }`}>
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="font-medium text-xs text-zinc-200 flex items-center gap-2">
+                <span class="text-base">{m.icon}</span>
+                <span>{m.name}</span>
+              </span>
+              <span class={`font-mono text-[11px] font-bold ${
+                isUnlocked ? 'text-emerald-400' : 'text-zinc-400'
+              }`}>
+                {isUnlocked ? 'COMPLETED 🏆' : `${mProgress}%`}
+              </span>
+            </div>
+
+            <div class="flex justify-between font-mono text-[10px] text-zinc-500 mb-2">
+              <span>Goal: {m.targetKm.toString()} km</span>
+              <span>{totalDistanceKm >= m.targetKm ? `${m.targetKm.toString()} km` : `${totalDistanceKm.toFixed(1)} km`}</span>
+            </div>
+
+            <div class="strava-progress-track w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/60">
+              <div 
+                class={`h-full rounded-full transition-all duration-700 ${
+                  isUnlocked 
+                    ? 'bg-emerald-400 shadow-sm shadow-emerald-400/50' 
+                    : 'bg-gradient-to-r from-orange-600 to-amber-400'
+                }`}
+                style={`width: ${mProgress}%`}
+              ></div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   </div>
 
