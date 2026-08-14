@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -48,10 +48,23 @@ jobs:
             
             const accessToken = tokenData.access_token;
 
-            const actRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=200", {
-              headers: { Authorization: `Bearer ${accessToken}` }
-            });
-            const activities = await actRes.json();
+            let page = 1;
+            let activities = [];
+
+            while (true) {
+              // Pass epoch 1738022400 (Dec 28, 2025) and page index
+              const actRes = await fetch(`https://www.strava.com/api/v3/athlete/activities?per_page=200&page=${page}&after=1766880000`, {
+                headers: { Authorization: `Bearer ${accessToken}` }
+              });
+              const activitiy = await actRes.json();
+
+              if (!Array.isArray(activitiy) || activitiy.length === 0) {
+                break; // Reached end of data or no more activities
+              }
+
+              activities.push(...activitiy);
+              page++;
+            }
 
             // Safety check: ensure response is an array before filtering
             if (!Array.isArray(activities)) {
