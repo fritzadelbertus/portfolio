@@ -26,7 +26,6 @@ jobs:
           node -e '
           const fs = require("fs");
           async function sync() {
-            // 1. Get Access Token
             const tokenRes = await fetch("https://www.strava.com/oauth/token", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -38,23 +37,37 @@ jobs:
               })
             });
             const tokenData = await tokenRes.json();
+            
+            if (!tokenData.access_token) {
+              console.error("Failed to refresh access token:", tokenData);
+              process.exit(1);
+            }
+            
             const accessToken = tokenData.access_token;
 
-            // 2. Fetch Activities (Run type only)
             const actRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=200", {
               headers: { Authorization: `Bearer ${accessToken}` }
             });
             const activities = await actRes.json();
 
-            const runs = activities
-              .filter(a => a.type === "Run")
+            // Safety check: ensure response is an array before filtering
+            if (!Array.isArray(activities)) {
+              console.error("Strava API did not return an array of activities:", activities);
+              process.exit(1);
+            }
+
+            // 3. Filter both Runs and Walks (checking both type & sport_type)
+            const allowedTypes = ["Run", "Walk"];
+            const filteredActivities = activities
+              .filter(a => allowedTypes.includes(a.type) || allowedTypes.includes(a.sport_type))
               .map(a => ({
                 date: a.start_date_local.split("T")[0],
-                distanceKm: Number((a.distance / 1000).toFixed(2))
+                distanceKm: Number((a.distance / 1000).toFixed(2)),
+                type: a.type || a.sport_type // Distinguish between Run and Walk if needed
               }));
 
-            fs.writeFileSync("./src/data/strava-activities.json", JSON.stringify(runs, null, 2));
-            console.log(`Synced ${runs.length} runs successfully!`);
+            fs.writeFileSync("./src/data/strava-activities.json", JSON.stringify(filteredActivities, null, 2));
+            console.log(`Synced ${filteredActivities.length} activities (Runs & Walks) successfully!`);
           }
           sync();
           '
@@ -64,5 +77,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add src/data/strava-activities.json
-          git commit -m "update: sync strava running activities" || exit 0
+          git commit -m "update: sync strava running & walking activities" || exit 0
           git push
