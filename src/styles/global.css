@@ -100,6 +100,20 @@ html.creative-mode .bg-cyan-400 {
   @apply !bg-orange-500;
 }
 
+/* Automatically show hero background when Creative Mode is active */
+html.creative-mode #hero-bg-creative {
+  opacity: 1;
+}
+
+/* Automatically show/hide projects based on root class */
+html.creative-mode .project-pro {
+  display: none !important;
+}
+
+html:not(.creative-mode) .project-creative {
+  display: none !important;
+}
+
 /* Hide the resume button in Creative Mode */
 html.creative-mode .hero-action-btn .hover\:bg-cyan-400:hover {
   @apply !bg-orange-500;
@@ -122,3 +136,23 @@ html.creative-mode #hero-subtitle-creative {
 }
 
 /* src/styles/global.css */
+
+
+/* ==========================================================================
+   LanguagePicker Dynamic Theme Switcher Overrides
+   ========================================================================== */
+
+/* Active Language Button: Switch Cyan -> Orange in Creative Mode */
+html.creative-mode .lang-active-btn {
+  @apply !bg-orange-500 !text-white hover:!bg-orange-600 shadow-sm shadow-orange-950/20;
+}
+
+/* Picker Outer Shell: Warm Cream in Creative Mode */
+html.creative-mode .lang-picker-container {
+  @apply !bg-stone-100/90 !border-orange-200/80 shadow-sm;
+}
+
+/* Inactive Text Links in Creative Mode */
+html.creative-mode .lang-picker-container a:not(.lang-active-btn) {
+  @apply !text-stone-600 hover:!text-stone-900 hover:!bg-orange-100/50;
+}

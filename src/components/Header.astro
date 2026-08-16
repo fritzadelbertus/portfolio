@@ -1,19 +1,33 @@
 ---
 // src/components/Header.astro
+import ModeToggle from './ModeToggle.astro';
+import LanguagePicker from './LanguagePicker.astro';
+import { useTranslations } from '../i18n/ui';
+import type { ui } from '../i18n/ui';
+
+// Astro automatically detects the language from the current URL route!
+const lang = (Astro.currentLocale ?? 'en') as keyof typeof ui;
+const t = useTranslations(lang);
 ---
 
-<header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/80 mb-12">
+<header class="sticky top-0 z-50 backdrop-blur-md bg-zinc-950/80 border-b border-zinc-800/80">
   <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="/" class="font-mono font-bold text-zinc-100 tracking-wider hover:text-cyan-400 transition">
-      FAS<span class="text-cyan-400">.</span>
-    </a>
-
-    <nav class="flex items-center gap-6 text-sm font-medium text-zinc-400">
-      <a href="#projects" class="hover:text-zinc-100 transition">Projects</a>
-      <a href="#research" class="hover:text-zinc-100 transition">Research & Write-ups</a>
-      <a href="mailto:your.email@example.com" class="text-xs font-mono px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-400 hover:bg-cyan-900/50 transition">
-        Get in Touch
+    <!-- Left: Brand & Nav Links -->
+    <div class="flex items-center gap-8">
+      <a href="/" class="font-mono font-bold text-zinc-100 tracking-wider">
+        FAS
       </a>
-    </nav>
+      <nav class="flex gap-4">
+        <!-- <a href="#projects" class="text-sm text-zinc-400 hover:text-zinc-100 transition-colors">
+          {t('nav.projects')}
+        </a> -->
+      </nav>
+    </div>
+
+    <!-- Right Controls: Grouped together with fixed spacing -->
+    <div class="flex items-center gap-3 shrink-0">
+      <LanguagePicker />
+      <ModeToggle />
+    </div>
   </div>
 </header>

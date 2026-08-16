@@ -1,28 +1,28 @@
 ---
 // src/pages/index.astro
-import '../styles/global.css';
-import Hero from '../components/Hero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import '../../styles/global.css';
+import Hero from '../../components/Hero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Header from '../../components/Header.astro';
 import { getCollection } from 'astro:content';
-import { useTranslations } from '../i18n/ui';
-import Header from '../components/Header.astro';
+import { useTranslations } from '../../i18n/ui';
 
-const t = useTranslations('en');
+const t = useTranslations('id');
 
 // Fetch all markdown files managed by src/content.config.ts
 const allProjects = await getCollection('projects', ({ id }) => {
-  return id.endsWith('en');
+  return id.endsWith('id');
 });
-
 // Filter projects based on the category defined in frontmatter
 const proProjects = allProjects.filter(p => 
   ['Quant', 'Systems', 'Mathematics', 'Data'].includes(p.data.category)
 );
+
 const creativeProjects = allProjects.filter(p => 
   ['Game Dev', 'Web', 'Others'].includes(p.data.category)
 );
 ---
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -62,28 +62,30 @@ const creativeProjects = allProjects.filter(p =>
 
         <div class="project-pro grid grid-cols-1 md:grid-cols-2 gap-6">
           {proProjects.map((project) => {
-            const slug = project.id.replace(/\/en(\.mdx?)?$/, '');
-            return (<ProjectCard 
+            const [projectSlug] = project.id.split('/');
+          
+            return <ProjectCard 
               title={project.data.title}
               description={project.data.description}
               tags={project.data.tags}
               metrics={project.data.metrics}
-              slug={`projects/${slug}`}
+              slug={`id/projects/${projectSlug}`}
             />
-          )})}
+          })}
         </div>
 
         <div class="project-creative grid grid-cols-1 md:grid-cols-2 gap-6">
           {creativeProjects.map((project) => {
-            const slug = project.id.replace(/\/en(\.mdx?)?$/, '');
-            return (<ProjectCard 
+            const [projectSlug] = project.id.split('/');
+          
+            return <ProjectCard 
               title={project.data.title}
               description={project.data.description}
               tags={project.data.tags}
               metrics={project.data.metrics}
-              slug={`projects/${slug}`}
+              slug={`id/projects/${projectSlug}`}
             />
-          )})}
+          })}
         </div>
       </section>
 

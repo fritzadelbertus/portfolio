@@ -23,7 +23,7 @@ Retail algorithmic trading systems (Expert Advisors) typically rely on large acc
 
 ### In-Memory Strategy Simulation Engine
 * Engineered an in-memory evaluation mechanism that simulates live strategy execution cycles in sub-millisecond real time.
-* Calculates dynamic market state indicators to categorize price action into **Safe** vs. **Unsafe** regimes, executing only low-risk, high-probability trade setups.
+* Calculates dynamic market state indicators to categorize price action into **Safe** vs. **Unsafe** regimes, executing only low-risk, high-profitability trade setups.
 
 ### Persistent Memory-State Preservation
 * Developed a custom disk-serialization engine that periodically saves internal simulation memory and active strategy parameters.
@@ -78,7 +78,7 @@ Full Report
 
 Charts
 
-![Backtest Charts](../../../public/images/golden_sundae_charts.webp)
+![Backtest Charts](/images/golden_sundae_charts.webp)
 
 
 ## Verification Artifacts

@@ -5,6 +5,7 @@ interface Props {
   title: string;
   category?: string; // Optional project category passed from project detail page
 }
+import Header from '../components/Header.astro';
 
 const { title, category } = Astro.props;
 ---
@@ -30,6 +31,7 @@ const { title, category } = Astro.props;
     </script>
   </head>
   <body>
+    <Header />
     <slot />
   </body>
 </html>

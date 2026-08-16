@@ -12,6 +12,13 @@ export default defineConfig({
   site: 'https://fritzadelbertus.com',
   base: '/', // Remove or change to '/' if using a custom root domain
   integrations: [],
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'ja', 'id'],
+    routing: {
+      prefixDefaultLocale: false, // 'en' uses root '/', 'ja' uses '/ja', 'id' uses '/id'
+    },
+  },
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],

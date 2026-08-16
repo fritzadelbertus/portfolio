@@ -10,7 +10,7 @@ const projects = defineCollection({
     description: z.string(),
     category: z.enum(['Quant', 'Systems', 'Mathematics', 'Web', 'Game Dev', 'Data', 'Others']), // Domains: Quantitative, Systems/Crypto, ML
     tags: z.array(z.string()),
-    metrics: z.string().optional(), // For quantitative results (e.g., "2.08 Profit Factor")
+    metrics: z.string().optional(),
     github: z.string().url().optional(),
     strava: z.string().url().optional(),    
     instagram: z.string().url().optional(),

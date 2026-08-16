@@ -1,46 +1,51 @@
 ---
 // src/components/ModeToggle.astro
+import { useTranslations } from '../i18n/ui';
+import type { ui } from '../i18n/ui';
+
+// Astro automatically detects the language from the current URL route!
+const lang = (Astro.currentLocale ?? 'en') as keyof typeof ui;
+const t = useTranslations(lang);
+
+const modeProText = `${t('nav.mode_pro')} ⚙️`;
+const modeCreativeText = `${t('nav.mode_creative')} 🎨`;
+
 ---
 
 <button
   id="mode-toggle"
-  class="relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-sm cursor-pointer border-zinc-700 bg-zinc-900 text-cyan-400 hover:border-cyan-400"
+  style="width: 205px; min-width: 205px; max-width: 205px;"
+  class="relative inline-flex items-center justify-center shrink-0 px-3 py-2 text-xs font-mono rounded-full border transition-colors duration-300 shadow-sm cursor-pointer border-zinc-700 bg-zinc-900 text-cyan-400 hover:border-cyan-400"
 >
-  <span id="toggle-indicator" class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-  <span id="toggle-label">Mode: Professional ⚙️</span>
+  <div class="w-full flex items-center justify-center gap-2 text-center">
+    <span id="toggle-indicator" class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0"></span>
+    <span id="toggle-label" class="whitespace-nowrap font-medium">{modeProText}</span>
+  </div>
 </button>
 
-<script>
+<!-- 3. Pass server-side variables to client-side script with define:vars -->
+<script is:inline define:vars={{ modeProText, modeCreativeText }}>
   const toggleBtn = document.getElementById('mode-toggle');
   const toggleLabel = document.getElementById('toggle-label');
   const toggleIndicator = document.getElementById('toggle-indicator');
-  
-  let currentMode = localStorage.getItem('portfolio-mode') || 'professional';
 
-  function applyMode(mode: string) {
+  let currentMode = localStorage.getItem('theme-mode') || 'professional';
+
+  function applyMode(mode) {
     const root = document.documentElement;
-    const heroBg = document.getElementById('hero-bg-creative');
-    const proProjects = document.querySelectorAll('.project-pro');
-    const creativeProjects = document.querySelectorAll('.project-creative');
 
     if (mode === 'creative') {
-        root.classList.add('creative-mode');
-        if (toggleLabel) toggleLabel.textContent = 'Mode: Creative ☀️';
-        if (toggleIndicator) toggleIndicator.className = 'w-2 h-2 rounded-full bg-amber-300 animate-pulse';
-        if (toggleBtn) toggleBtn.className = 'relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-md cursor-pointer border-amber-300 bg-amber-100 text-stone-900 font-bold hover:bg-white';
-
-        if (heroBg) heroBg.classList.remove('opacity-0');
-        proProjects.forEach(el => el.classList.add('hidden'));
-        creativeProjects.forEach(el => el.classList.remove('hidden'));
+      root.classList.add('creative-mode');
+      // Use the translated variable passed from Astro frontmatter
+      if (toggleLabel) toggleLabel.textContent = modeCreativeText;
+      if (toggleIndicator) toggleIndicator.className = 'w-2 h-2 rounded-full bg-amber-300 animate-pulse';
+      if (toggleBtn) toggleBtn.className = 'relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-md cursor-pointer border-amber-300 bg-amber-100 text-stone-900 font-bold hover:bg-white';
     } else {
       root.classList.remove('creative-mode');
-      if (toggleLabel) toggleLabel.textContent = 'Mode: Professional ⚙️';
+      // Use the translated variable passed from Astro frontmatter
+      if (toggleLabel) toggleLabel.textContent = modeProText;
       if (toggleIndicator) toggleIndicator.className = 'w-2 h-2 rounded-full bg-cyan-400 animate-pulse';
       if (toggleBtn) toggleBtn.className = 'relative inline-flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-full border transition-all duration-300 shadow-sm cursor-pointer border-zinc-700 bg-zinc-900 text-cyan-400 hover:border-cyan-400';
-
-      if (heroBg) heroBg.classList.add('opacity-0');
-      proProjects.forEach(el => el.classList.remove('hidden'));
-      creativeProjects.forEach(el => el.classList.add('hidden'));
     }
     localStorage.setItem('portfolio-mode', mode);
   }
@@ -50,7 +55,6 @@
   toggleBtn?.addEventListener('click', () => {
     currentMode = currentMode === 'professional' ? 'creative' : 'professional';
     applyMode(currentMode);
-    
     localStorage.setItem('theme-mode', currentMode);
   });
 </script>

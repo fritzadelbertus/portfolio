@@ -1,0 +1,60 @@
+---
+// src/components/LanguagePicker.astro
+import { languages } from '../i18n/ui';
+
+const currentPath = Astro.url.pathname;
+
+const currentLocale = Astro.currentLocale || (
+  currentPath.includes('/ja') ? 'ja' :
+  currentPath.includes('/id') ? 'id' : 'en'
+);
+
+// 2. Helper to switch languages cleanly across root and nested routes
+function getLocalizedPath(targetLang: string) {
+  // Case A: If target is English (default root)
+  if (targetLang === 'en') {
+    // Remove /ja or /id from prefix or within /projects/
+    return currentPath
+      .replace(/^\/(ja|id)(\/|$)/, '/')
+      .replace(/\/projects\/(ja|id)(\/|$)/, '/projects/')
+      .replace(/\/+$/, '') || '/';
+  }
+  // Case B: If switching to 'ja' or 'id'
+  // If the path is inside /projects/
+  if (currentPath.includes('/projects')) {
+    const cleanProjectPath = currentPath
+      .replace(/^\/(ja|id)\/projects/, '/projects')
+      .replace(/\/projects\/(ja|id)/, '/projects');
+    
+    // Returns /ja/projects/... or /projects/ja/... depending on your routing setup
+    return `/${targetLang}${cleanProjectPath === '/' ? '' : cleanProjectPath}`;
+  }
+
+  // General routes (e.g., /, /about, etc.)
+  const cleanPath = currentPath.replace(/^\/(ja|id)(\/|$)/, '/');
+  return `/${targetLang}${cleanPath === '/' ? '' : cleanPath}`;
+}
+---
+<div class="relative inline-block text-xs font-mono">
+  <div class="lang-picker-container flex items-center gap-1 bg-zinc-900/90 border border-zinc-800 rounded-lg p-1 transition-colors duration-300">
+    {Object.entries(languages).map(([langKey, { label, flag }]) => {
+      // Direct comparison with the active locale
+      const isActive = currentLocale === langKey;
+
+      return (
+        <a
+          href={getLocalizedPath(langKey)}
+          class={`px-2.5 py-1 rounded-md transition-all duration-300 flex items-center gap-1.5 ${
+            isActive
+              ? 'lang-active-btn bg-cyan-500 text-zinc-950 font-bold shadow-sm shadow-cyan-950/20'
+              : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'
+          }`}
+          title={label}
+        >
+          <span>{flag}</span>
+          <span class="hidden sm:inline uppercase">{langKey}</span>
+        </a>
+      );
+    })}
+  </div>
+</div>

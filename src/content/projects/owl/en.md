@@ -5,7 +5,7 @@ category: "Systems"
 tags: ["Cryptography", "Group Actions", "Lattice Cryptography", "C", "Python", "Fiat-Shamir"]
 metrics: "Constructed OWL-LITE & OWL-ONE Variants"
 github: "https://github.com/fritzadelbertus/owl-gmw-fs"
-slug: "owl"
+featured: true
 ---
 
 ## Executive Summary

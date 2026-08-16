@@ -1,16 +1,16 @@
 ---
 // Inside src/pages/projects/[slug].astro
 import { getCollection, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import StravaDashboard from '../../components/StravaDashboard.astro';
+import Layout from '../../../layouts/Layout.astro';
+import StravaDashboard from '../../../components/StravaDashboard.astro';
 
 export async function getStaticPaths() {
   // 1. Match both "en" and "en.md"
-  const enProjects = await getCollection('projects', ({ id }) => {
-    return id.endsWith('/en.md') || id.endsWith('/en');
+  const jaProjects = await getCollection('projects', ({ id }) => {
+    return id.endsWith('/ja.md') || id.endsWith('/ja');
   });
 
-  return enProjects.map((project) => {
+  return jaProjects.map((project) => {
     // 2. Extract the folder name before the slash (e.g., "2048-game")
     const [projectFolder] = project.id.split('/');
 
@@ -24,7 +24,6 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 ---
-
 <Layout title={`${project.data.title} | Portfolio`} category={project.data.category}>
   <article class="max-w-4xl mx-auto px-6 py-12">
     

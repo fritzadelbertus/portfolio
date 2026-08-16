@@ -6,7 +6,7 @@ tags: ["Game Development", "State Machines", "UI/UX Design", "Logic Optimization
 metrics: "Live Public Deployment with Creator Program Revenue"
 demoUrl: "https://hoyo.link/80GCFBAL?q=2UFsE62nwqh"
 demoLabel: "View Game Post"
-slug: "2048-miliastra-engine"
+featured: true
 ---
 
 ## Executive Summary

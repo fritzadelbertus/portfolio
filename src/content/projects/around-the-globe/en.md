@@ -4,9 +4,9 @@ description: "A project to travel a distance of 40075km"
 category: "Others"
 tags: ["Running", "Health", "Consistency"]
 metrics: "Mileage: < 1700 km | Furthest Single Session: Half Marathon"
-featured: true
 strava: "https://www.strava.com/athletes/49307917"
 instagram: "https://www.instagram.com/fritz_adel"
+featured: true
 ---
 
 ## The Relativity of the Impossible Goal
