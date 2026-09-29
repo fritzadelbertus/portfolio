@@ -1418,5 +1418,10 @@
     "date": "2026-09-28",
     "distanceKm": 7.33,
     "type": "Run"
+  },
+  {
+    "date": "2026-09-29",
+    "distanceKm": 5.42,
+    "type": "Walk"
   }
 ]
