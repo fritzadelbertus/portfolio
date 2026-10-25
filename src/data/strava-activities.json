@@ -1563,5 +1563,10 @@
     "date": "2026-10-24",
     "distanceKm": 5.62,
     "type": "Walk"
+  },
+  {
+    "date": "2026-10-25",
+    "distanceKm": 5,
+    "type": "Walk"
   }
 ]
